@@ -1,0 +1,13 @@
+train: ../dataset/train/images
+val: ../dataset/valid/images
+test: ../dataset/test/images
+
+nc: 1
+names: ['Vehicle-registration-plate']
+
+roboflow:
+  workspace: license-plate-detection-9sobw
+  project: yolov5-hzrsx-xix9n
+  version: 1
+  license: Public Domain
+  url: https://app.roboflow.com/license-plate-detection-9sobw/yolov5-hzrsx-xix9n/1

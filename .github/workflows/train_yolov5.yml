@@ -1,0 +1,49 @@
+name: Train YOLOv5 Model
+
+on:
+  workflow_dispatch:  # Allows manual execution from GitHub Actions
+
+jobs:
+  train:
+    runs-on: ubuntu-latest  # GitHub-hosted runner (No GPU)
+    # Change to 'ubuntu-20.04' with a self-hosted GPU runner for better performance
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update && sudo apt install -y libgl1-mesa-glx
+          pip install --upgrade pip
+          pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+          
+      - name: Clone YOLOv5
+        run: |
+          git clone https://github.com/ultralytics/yolov5.git
+          cd yolov5
+          pip install -r requirements.txt
+
+      - name: Download Dataset (If hosted externally)
+        run: |
+          mkdir -p dataset
+          wget -O dataset.zip "YOUR_DATASET_DOWNLOAD_LINK_HERE"
+          unzip dataset.zip -d dataset
+
+      - name: Train YOLOv5 Model
+        run: |
+          cd yolov5
+          python train.py --img 640 --batch 16 --epochs 50 --data ../dataset/data.yaml --weights yolov5s.pt
+
+      - name: Upload Model Weights
+        uses: actions/upload-artifact@v4
+        with:
+          name: trained-model
+          path: yolov5/runs/train/exp/weights/best.pt
+
