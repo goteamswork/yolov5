@@ -33,7 +33,7 @@ jobs:
           pip install -r requirements.txt
           
       - name: Install gdown
-         run: |
+        run: |
           pip install gdown
 
       - name: Download Dataset (If hosted externally)
