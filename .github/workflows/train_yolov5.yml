@@ -40,7 +40,7 @@ jobs:
         run: |
           mkdir -p dataset
           gdown --id 13OC2-not25IqK6zeb-Ouc9NVqfrNRMzm
-          unzip dataset.zip -d dataset
+          unzip dataset.zip -d dataset || true
 
       - name: Train YOLOv5 Model
         run: |
