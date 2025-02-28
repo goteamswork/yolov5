@@ -35,7 +35,7 @@ jobs:
       - name: Download Dataset (If hosted externally)
         run: |
           mkdir -p dataset
-          wget -O dataset.zip "YOUR_DATASET_DOWNLOAD_LINK_HERE"
+          wget -O dataset.zip "https://drive.google.com/file/d/13OC2-not25IqK6zeb-Ouc9NVqfrNRMzm/view?usp=sharing"
           unzip dataset.zip -d dataset
 
       - name: Train YOLOv5 Model
