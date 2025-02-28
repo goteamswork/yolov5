@@ -31,11 +31,15 @@ jobs:
           git clone https://github.com/ultralytics/yolov5.git
           cd yolov5
           pip install -r requirements.txt
+         
+      - name: Install gdown
+         run: pip install gdown
+
 
       - name: Download Dataset (If hosted externally)
         run: |
           mkdir -p dataset
-          wget -O dataset.zip "https://drive.google.com/file/d/13OC2-not25IqK6zeb-Ouc9NVqfrNRMzm/view?usp=sharing"
+          gdown --id 13OC2-not25IqK6zeb-Ouc9NVqfrNRMzm
           unzip dataset.zip -d dataset
 
       - name: Train YOLOv5 Model
