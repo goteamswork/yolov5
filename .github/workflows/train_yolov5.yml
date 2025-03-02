@@ -4,37 +4,31 @@ on:
   workflow_dispatch:  # Allows manual execution from GitHub Actions
 
 jobs:
-  train:
-    runs-on: ubuntu-latest  # GitHub-hosted runner (No GPU)
-    # Change to 'ubuntu-20.04' with a self-hosted GPU runner for better performance
-
+  setup:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set Up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.9"
-
       - name: Install Dependencies
         run: |
           sudo apt update
-          sudo apt install -y software-properties-common
-          sudo apt install -y libgl1 libglib2.0-0 libglvnd-dev  # Fix missing dependencies
+          sudo apt install -y libgl1 libglib2.0-0 libglvnd-dev
           pip install --upgrade pip
           pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
           pip install -r requirements.txt
-          
+
       - name: Clone YOLOv5
         run: |
           git clone https://github.com/ultralytics/yolov5.git
           cd yolov5
           pip install -r requirements.txt
-          
-      - name: Install gdown
-        run: |
-          pip install gdown
+
+      - name: Cache dataset
+        uses: actions/cache@v3
+        with:
+          path: dataset
+          key: yolov5-dataset
 
       - name: Download Dataset (If hosted externally)
         run: |
@@ -42,17 +36,161 @@ jobs:
           gdown --id 13OC2-not25IqK6zeb-Ouc9NVqfrNRMzm
           unzip dataset.zip -d dataset || true
 
-      - name: Train YOLOv5 Model
+  train-epochs-0-9:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Restore dataset
+        uses: actions/cache@v3
+        with:
+          path: dataset
+          key: yolov5-dataset
+
+      - name: Restore YOLOv5
+        run: git clone https://github.com/ultralytics/yolov5.git
+
+      - name: Train Epochs 0-9
         run: |
           cd yolov5
-          python train.py --img 640 --batch 16 --epochs 50 --data ../dataset/data.yaml --weights yolov5s.pt
+          python train.py --img 640 --batch 16 --epochs 10 --data ../dataset/data.yaml --weights yolov5s.pt --save_checkpoint best_0_9.pt
 
-      - name: Upload Model Weights
+      - name: Cache checkpoint
+        uses: actions/cache@v3
+        with:
+          path: yolov5/runs/train/exp/weights/best_0_9.pt
+          key: yolov5-checkpoint-0-9
+
+  train-epochs-10-19:
+    needs: train-epochs-0-9
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Restore dataset
+        uses: actions/cache@v3
+        with:
+          path: dataset
+          key: yolov5-dataset
+
+      - name: Restore YOLOv5
+        run: git clone https://github.com/ultralytics/yolov5.git
+
+      - name: Restore previous checkpoint
+        uses: actions/cache@v3
+        with:
+          path: yolov5/runs/train/exp/weights/best_0_9.pt
+          key: yolov5-checkpoint-0-9
+
+      - name: Train Epochs 10-19
+        run: |
+          cd yolov5
+          python train.py --img 640 --batch 16 --epochs 10 --data ../dataset/data.yaml --weights runs/train/exp/weights/best_0_9.pt --save_checkpoint best_10_19.pt
+
+      - name: Cache checkpoint
+        uses: actions/cache@v3
+        with:
+          path: yolov5/runs/train/exp/weights/best_10_19.pt
+          key: yolov5-checkpoint-10-19
+
+  train-epochs-20-29:
+    needs: train-epochs-10-19
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Restore dataset
+        uses: actions/cache@v3
+        with:
+          path: dataset
+          key: yolov5-dataset
+
+      - name: Restore YOLOv5
+        run: git clone https://github.com/ultralytics/yolov5.git
+
+      - name: Restore previous checkpoint
+        uses: actions/cache@v3
+        with:
+          path: yolov5/runs/train/exp/weights/best_10_19.pt
+          key: yolov5-checkpoint-10-19
+
+      - name: Train Epochs 20-29
+        run: |
+          cd yolov5
+          python train.py --img 640 --batch 16 --epochs 10 --data ../dataset/data.yaml --weights runs/train/exp/weights/best_10_19.pt --save_checkpoint best_20_29.pt
+
+      - name: Cache checkpoint
+        uses: actions/cache@v3
+        with:
+          path: yolov5/runs/train/exp/weights/best_20_29.pt
+          key: yolov5-checkpoint-20-29
+
+  train-epochs-30-39:
+    needs: train-epochs-20-29
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Restore dataset
+        uses: actions/cache@v3
+        with:
+          path: dataset
+          key: yolov5-dataset
+
+      - name: Restore YOLOv5
+        run: git clone https://github.com/ultralytics/yolov5.git
+
+      - name: Restore previous checkpoint
+        uses: actions/cache@v3
+        with:
+          path: yolov5/runs/train/exp/weights/best_20_29.pt
+          key: yolov5-checkpoint-20-29
+
+      - name: Train Epochs 30-39
+        run: |
+          cd yolov5
+          python train.py --img 640 --batch 16 --epochs 10 --data ../dataset/data.yaml --weights runs/train/exp/weights/best_20_29.pt --save_checkpoint best_30_39.pt
+
+      - name: Cache checkpoint
+        uses: actions/cache@v3
+        with:
+          path: yolov5/runs/train/exp/weights/best_30_39.pt
+          key: yolov5-checkpoint-30-39
+
+  train-epochs-40-49:
+    needs: train-epochs-30-39
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Restore dataset
+        uses: actions/cache@v3
+        with:
+          path: dataset
+          key: yolov5-dataset
+
+      - name: Restore YOLOv5
+        run: git clone https://github.com/ultralytics/yolov5.git
+
+      - name: Restore previous checkpoint
+        uses: actions/cache@v3
+        with:
+          path: yolov5/runs/train/exp/weights/best_30_39.pt
+          key: yolov5-checkpoint-30-39
+
+      - name: Train Epochs 40-49
+        run: |
+          cd yolov5
+          python train.py --img 640 --batch 16 --epochs 9 --data ../dataset/data.yaml --weights runs/train/exp/weights/best_30_39.pt --save_checkpoint best_40_49.pt
+
+      - name: Upload Final Model
         uses: actions/upload-artifact@v4
         with:
-          name: trained-model
-          path: yolov5/runs/train/exp/weights/best.pt
-          
-          
-          #123
-
+          name: trained-yolov5-model
+          path: yolov5/runs/train/exp/weights/best_40_49.pt
