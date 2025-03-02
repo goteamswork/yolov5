@@ -53,6 +53,14 @@ jobs:
           path: dataset
           key: yolov5-dataset
 
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y libgl1 libglib2.0-0 libglvnd-dev
+          pip install --upgrade pip
+          pip install numpy==1.26.2 torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+
       - name: Restore YOLOv5
         run: git clone https://github.com/ultralytics/yolov5.git
 
@@ -79,7 +87,15 @@ jobs:
         with:
           path: dataset
           key: yolov5-dataset
-
+          
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y libgl1 libglib2.0-0 libglvnd-dev
+          pip install --upgrade pip
+          pip install numpy==1.26.2 torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+          
       - name: Restore YOLOv5
         run: git clone https://github.com/ultralytics/yolov5.git
 
@@ -112,6 +128,14 @@ jobs:
         with:
           path: dataset
           key: yolov5-dataset
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y libgl1 libglib2.0-0 libglvnd-dev
+          pip install --upgrade pip
+          pip install numpy==1.26.2 torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
 
       - name: Restore YOLOv5
         run: git clone https://github.com/ultralytics/yolov5.git
@@ -146,6 +170,14 @@ jobs:
           path: dataset
           key: yolov5-dataset
 
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y libgl1 libglib2.0-0 libglvnd-dev
+          pip install --upgrade pip
+          pip install numpy==1.26.2 torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+
       - name: Restore YOLOv5
         run: git clone https://github.com/ultralytics/yolov5.git
 
@@ -179,6 +211,14 @@ jobs:
           path: dataset
           key: yolov5-dataset
 
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y libgl1 libglib2.0-0 libglvnd-dev
+          pip install --upgrade pip
+          pip install numpy==1.26.2 torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+          
       - name: Restore YOLOv5
         run: git clone https://github.com/ultralytics/yolov5.git
 
