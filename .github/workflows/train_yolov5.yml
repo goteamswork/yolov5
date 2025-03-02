@@ -67,12 +67,12 @@ jobs:
       - name: Train Epochs 0-9
         run: |
           cd yolov5
-          python train.py --img 640 --batch 16 --epochs 10 --data ../dataset/data.yaml --weights yolov5s.pt --save_checkpoint best_0_9.pt
+          python train.py --img 640 --batch 16 --epochs 10 --data ../dataset/data.yaml --weights yolov5s.pt
 
       - name: Cache checkpoint
         uses: actions/cache@v3
         with:
-          path: yolov5/runs/train/exp/weights/best_0_9.pt
+          path: yolov5/runs/train/exp/weights/best.pt
           key: yolov5-checkpoint-0-9
 
   train-epochs-10-19:
@@ -102,18 +102,18 @@ jobs:
       - name: Restore previous checkpoint
         uses: actions/cache@v3
         with:
-          path: yolov5/runs/train/exp/weights/best_0_9.pt
+          path: yolov5/runs/train/exp/weights/best.pt
           key: yolov5-checkpoint-0-9
 
       - name: Train Epochs 10-19
         run: |
           cd yolov5
-          python train.py --img 640 --batch 16 --epochs 10 --data ../dataset/data.yaml --weights runs/train/exp/weights/best_0_9.pt --save_checkpoint best_10_19.pt
+          python train.py --img 640 --batch 16 --epochs 10 --data ../dataset/data.yaml --weights runs/train/exp/weights/best.pt
 
       - name: Cache checkpoint
         uses: actions/cache@v3
         with:
-          path: yolov5/runs/train/exp/weights/best_10_19.pt
+          path: yolov5/runs/train/exp/weights/best.pt
           key: yolov5-checkpoint-10-19
 
   train-epochs-20-29:
@@ -143,18 +143,18 @@ jobs:
       - name: Restore previous checkpoint
         uses: actions/cache@v3
         with:
-          path: yolov5/runs/train/exp/weights/best_10_19.pt
+          path: yolov5/runs/train/exp/weights/best.pt
           key: yolov5-checkpoint-10-19
 
       - name: Train Epochs 20-29
         run: |
           cd yolov5
-          python train.py --img 640 --batch 16 --epochs 10 --data ../dataset/data.yaml --weights runs/train/exp/weights/best_10_19.pt --save_checkpoint best_20_29.pt
+          python train.py --img 640 --batch 16 --epochs 10 --data ../dataset/data.yaml --weights runs/train/exp/weights/best.pt
 
       - name: Cache checkpoint
         uses: actions/cache@v3
         with:
-          path: yolov5/runs/train/exp/weights/best_20_29.pt
+          path: yolov5/runs/train/exp/weights/best.pt
           key: yolov5-checkpoint-20-29
 
   train-epochs-30-39:
@@ -184,18 +184,18 @@ jobs:
       - name: Restore previous checkpoint
         uses: actions/cache@v3
         with:
-          path: yolov5/runs/train/exp/weights/best_20_29.pt
+          path: yolov5/runs/train/exp/weights/best.pt
           key: yolov5-checkpoint-20-29
 
       - name: Train Epochs 30-39
         run: |
           cd yolov5
-          python train.py --img 640 --batch 16 --epochs 10 --data ../dataset/data.yaml --weights runs/train/exp/weights/best_20_29.pt --save_checkpoint best_30_39.pt
+          python train.py --img 640 --batch 16 --epochs 10 --data ../dataset/data.yaml --weights runs/train/exp/weights/best.pt
 
       - name: Cache checkpoint
         uses: actions/cache@v3
         with:
-          path: yolov5/runs/train/exp/weights/best_30_39.pt
+          path: yolov5/runs/train/exp/weights/best.pt
           key: yolov5-checkpoint-30-39
 
   train-epochs-40-49:
@@ -225,16 +225,16 @@ jobs:
       - name: Restore previous checkpoint
         uses: actions/cache@v3
         with:
-          path: yolov5/runs/train/exp/weights/best_30_39.pt
+          path: yolov5/runs/train/exp/weights/best.pt
           key: yolov5-checkpoint-30-39
 
       - name: Train Epochs 40-49
         run: |
           cd yolov5
-          python train.py --img 640 --batch 16 --epochs 9 --data ../dataset/data.yaml --weights runs/train/exp/weights/best_30_39.pt --save_checkpoint best_40_49.pt
+          python train.py --img 640 --batch 16 --epochs 9 --data ../dataset/data.yaml --weights runs/train/exp/weights/best.pt
 
       - name: Upload Final Model
         uses: actions/upload-artifact@v4
         with:
           name: trained-yolov5-model
-          path: yolov5/runs/train/exp/weights/best_40_49.pt
+          path: yolov5/runs/train/exp/weights/best.pt
