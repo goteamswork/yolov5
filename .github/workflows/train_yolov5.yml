@@ -30,6 +30,10 @@ jobs:
           path: dataset
           key: yolov5-dataset
 
+      - name: Install gdown
+        run: |
+          pip install gdown
+
       - name: Download Dataset (If hosted externally)
         run: |
           mkdir -p dataset
